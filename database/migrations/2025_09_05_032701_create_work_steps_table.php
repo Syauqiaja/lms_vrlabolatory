@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('order');
             $table->string('title');
+            $table->foreignId('work_step_group_id')->constrained('work_step_groups')->cascadeOnDelete();
             $table->timestamps();
         });
     }
