@@ -75,10 +75,10 @@ new class extends Component {
         </div>
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-8">
+    <div class="grid grid-cols-2 gap-4 items-start sm:items-center mb-8">
         @for ($i = 0; $i < count($materials); $i++) <a
             href="{{ route('admin.material.detail', ['activity' => $activity->id, 'material' => $materials[$i]->id]) }}"
-            class="flex-1 w-full sm:max-w-xl p-4 border border-gray-300/30 rounded-md flex gap-3 items-center hover:bg-blue-50/10">
+            class="col-span-2 md:col-span-1 p-4 border border-gray-300/30 rounded-md flex gap-3 items-center hover:bg-blue-50/10">
             <div class="rounded-full bg-gray-300/50 flex justify-center items-center w-8 h-8 flex-none">
                 <span class="font-bold">{{$i + 1}}</span>
             </div>
