@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('work_step_groups', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('experiment_scope');
             $table->string('subtitle')->nullable();
             $table->timestamps();
         });

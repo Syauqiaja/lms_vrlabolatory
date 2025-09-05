@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\WorkStep;
+use App\Models\WorkStepGroup;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class WorkSeeder extends Seeder
 {
@@ -124,5 +127,22 @@ class WorkSeeder extends Seeder
                 ]
             ]
         ];
+        DB::beginTransaction();
+        foreach ($data as $groupData) {
+            $workStepGroup = WorkStepGroup::create([
+                'title' => $groupData['title'],
+                'subtitle' => $groupData['subtitle'],
+                'experiment_scope' => $groupData['experiment_scope'],
+            ]);
+
+            foreach ($groupData['steps'] as $stepData) {
+                WorkStep::create([
+                    'title' => $stepData['title'],
+                    'order' => $stepData['order'],
+                    'work_step_group_id' => $workStepGroup->id
+                ]);
+            }
+        }
+        DB::commit();
     }
 }
