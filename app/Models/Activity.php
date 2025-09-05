@@ -15,4 +15,8 @@ class Activity extends Model
     public function materials(){
         return $this->hasMany(Material::class, 'activity_id');
     }
+
+    public function quiz(){
+        return $this->hasOne(Quiz::class, 'related_activity_id');
+    }
 }

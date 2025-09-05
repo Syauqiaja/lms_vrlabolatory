@@ -60,4 +60,11 @@ class User extends Authenticatable
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    public function userQuestionAnswers(){
+        return $this->hasMany(UserQuestionAnswer::class);
+    }
+    public function userQuizResults(){
+        return $this->hasMany(UserQuizResult::class);
+    }
 }

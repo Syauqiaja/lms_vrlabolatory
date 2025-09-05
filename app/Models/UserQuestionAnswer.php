@@ -12,4 +12,11 @@ class UserQuestionAnswer extends Model
         'answer',
         'is_correct',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+    public function quizQuestion(){
+        return $this->belongsTo(QuizQuestion::class);
+    }
 }

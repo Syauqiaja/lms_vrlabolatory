@@ -15,4 +15,8 @@ class QuizQuestion extends Model
         'answer_c',
         'answer_d',
     ];
+
+    public function quiz(){
+        return $this->belongsTo(Quiz::class, 'quiz_id');
+    }
 }
