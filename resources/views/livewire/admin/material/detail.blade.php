@@ -12,6 +12,21 @@ new class extends Component {
         $this->activity = $activity;
         $this->material = $material;
     }
+
+    public function previous(){
+        $this->redirect(route(
+            'admin.material.detail', 
+            ['activity' => $this->activity->id, 'material' => $this->material->previous()->id],
+            ),
+        );
+    }
+    public function next(){
+        $this->redirect(route(
+            'admin.material.detail', 
+            ['activity' => $this->activity->id, 'material' => $this->material->next()->id],
+            ),
+        );
+    }
 }; ?>
 
 <div>
@@ -21,4 +36,46 @@ new class extends Component {
             href="{{ route('admin.activity.detail', ['activity' => $activity->id]) }}" />
         <x-nav.breadcrumb-item title='{{ $material->title }}' />
     </x-nav.breadcrumb>
+
+    <div class="flex items-center">
+        <div>
+            <span class="font-semibold text-xl block">{{$material->title}}</span>
+            <span class="text-sm block text-gray-400">{{$activity->title}}</span>
+        </div>
+        <flux:spacer />
+        @role('admin')
+        <div class="flex-row gap-4 hidden md:flex">
+            @if ($material->previous())
+            <flux:button class="w-full" variant="outline" wire:click='previous' iconLeading='arrow-left'>
+                Kembali
+            </flux:button>
+            @endif
+            @if ($material->next())
+            <flux:button class="w-full" variant="outline" wire:click='next' iconTrailing='arrow-right'>
+                Berikutnya
+            </flux:button>
+            @endif
+        </div>
+        @endrole
+    </div>
+
+    <div class="my-4 md:my-8">
+        {!! $material->content !!}
+    </div>
+
+
+    @role('admin')
+    <div class="flex-row gap-4 flex md:hidden w-full mt-8">
+        @if ($material->previous())
+        <flux:button class="w-full" variant="outline" wire:click='previous' iconLeading='arrow-left'>
+            Kembali
+        </flux:button>
+        @endif
+        @if ($material->next())
+        <flux:button class="w-full" variant="outline" wire:click='next' iconTrailing='arrow-right'>
+            Berikutnya
+        </flux:button>
+        @endif
+    </div>
+    @endrole
 </div>

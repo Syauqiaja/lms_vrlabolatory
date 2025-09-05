@@ -29,15 +29,19 @@ new class extends Component {
     }
     public function save()
     {
+        
         if(!$this->title){
             $this->addError('title', 'This field is required');
             return;
         }
+        
+        $lastMaterial = $this->activity->materials()->orderBy('order', 'desc')->first(['order']);
 
         $this->isSaved = true;
         $this->activity->materials()->create([
             'content' => $this->content,
             'title' => $this->title,
+            'order' => ($lastMaterial?->order ?? 0) + 1,
         ]);
 
         Masmerise\Toaster\Toaster::success('Bershail menambahkan materi baru');

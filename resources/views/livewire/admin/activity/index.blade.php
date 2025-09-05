@@ -169,13 +169,13 @@ new class extends Component {
 
     @else
     <!-- Empty State -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
+    <div class="rounded-lg shadow-sm border border-gray-200 p-12 text-center">
         <div class="max-w-md mx-auto">
             <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <flux:icon name="folder-open" class="w-10 h-10 text-gray-400" />
             </div>
 
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+            <h3 class="text-lg font-semibold mb-2">
                 @if($search)
                 Tidak ada activity ditemukan
                 @else
@@ -183,7 +183,7 @@ new class extends Component {
                 @endif
             </h3>
 
-            <p class="text-gray-600 mb-6">
+            <p class="text-gray-600 dark:text-gray-300 mb-6">
                 @if($search)
                 Coba ubah kata kunci pencarian atau buat activity baru.
                 @else

@@ -80,7 +80,7 @@ new class extends Component {
             href="{{ route('admin.material.detail', ['activity' => $activity->id, 'material' => $materials[$i]->id]) }}"
             class="col-span-2 md:col-span-1 p-4 border border-gray-300/30 rounded-md flex gap-3 items-center hover:bg-blue-50/10">
             <div class="rounded-full bg-gray-300/50 flex justify-center items-center w-8 h-8 flex-none">
-                <span class="font-bold">{{$i + 1}}</span>
+                <span class="font-bold">{{$materials[$i]->order}}</span>
             </div>
             <div class="flex-1">
                 <div class="text-start font-medium">
