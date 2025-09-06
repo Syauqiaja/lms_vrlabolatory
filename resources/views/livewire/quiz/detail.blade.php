@@ -42,7 +42,7 @@ new class extends Component {
 
 <div class="min-h-screen">
     <x-nav.breadcrumb class="mb-6">
-        <x-nav.breadcrumb-item title='Quiz' href="{{ route('admin.quiz') }}" />
+        <x-nav.breadcrumb-item title='Quiz' href="{{ route('quiz') }}" />
         <x-nav.breadcrumb-item title='{{ $quiz->title }}' />
     </x-nav.breadcrumb>
     <div class="grid grid-cols-3">

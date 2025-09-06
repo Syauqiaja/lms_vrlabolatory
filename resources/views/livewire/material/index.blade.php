@@ -32,9 +32,9 @@ new class extends Component {
 
 <div>
     <x-nav.breadcrumb>
-        <x-nav.breadcrumb-item title='Activities' href="{{ route('admin.activity') }}" />
+        <x-nav.breadcrumb-item title='Activities' href="{{ route('activity') }}" />
         <x-nav.breadcrumb-item title='{{ $activity->title }}'
-            href="{{ route('admin.activity.detail', ['activity' => $activity->id]) }}" />
+            href="{{ route('activity.detail', ['activity' => $activity->id]) }}" />
         <x-nav.breadcrumb-item title='Materi' />
     </x-nav.breadcrumb>
 
@@ -64,7 +64,7 @@ new class extends Component {
 
     <div class="grid grid-cols-2 gap-4 items-start sm:items-center mb-8">
         @for ($i = 0; $i < count($materials); $i++) <a
-            href="{{ route('admin.material.detail', ['activity' => $activity->id, 'material' => $materials[$i]->id]) }}"
+            href="{{ route('material.detail', ['activity' => $activity->id, 'material' => $materials[$i]->id]) }}"
             class="col-span-2 md:col-span-1 p-4 border border-gray-300/30 rounded-md flex gap-3 items-center hover:bg-blue-50/10">
             <div class="rounded-full bg-gray-300/50 flex justify-center items-center w-8 h-8 flex-none">
                 <span class="font-bold">{{$materials[$i]->order}}</span>

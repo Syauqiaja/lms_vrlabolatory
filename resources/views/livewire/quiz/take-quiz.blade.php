@@ -102,7 +102,7 @@ new class extends Component {
         ]);
         
         \Masmerise\Toaster\Toaster::success('Congratulation, you finished the quiz!');
-        $this->redirect(route('admin.quiz.detail', ['quiz' => $this->quiz->id]));
+        $this->redirect(route('quiz.detail', ['quiz' => $this->quiz->id]));
     }
 
     public function retakeQuiz()

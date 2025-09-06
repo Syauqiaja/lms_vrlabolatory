@@ -66,16 +66,18 @@ new class extends Component {
         <x-nav.breadcrumb-item title='Activities' />
     </x-nav.breadcrumb>
 
-    <div class="flex items-center mb-8">
-        <div>
-            <span class="font-semibold text-xl block">Activities</span>
-            <span class="text-sm block text-gray-400">All of registered activities</span>
+    @role('admin')
+        <div class="flex items-center mb-8">
+            <div>
+                <span class="font-semibold text-xl block">Activities</span>
+                <span class="text-sm block text-gray-400">All of registered activities</span>
+            </div>
+            <flux:spacer />
+            <flux:button href="{{ route('admin.activity.create') }}" icon='plus' variant="primary">
+                Add Activity
+            </flux:button>
         </div>
-        <flux:spacer />
-        <flux:button href="{{ route('admin.activity.create') }}" icon='plus' variant="primary">
-            Add Activity
-        </flux:button>
-    </div>
+    @endrole
 
     <!-- Search and Filter Bar -->
     <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-8">
@@ -138,24 +140,28 @@ new class extends Component {
                 <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                     <div class="flex gap-2">
                         <flux:button size="sm" variant="ghost"
-                            href="{{ route('admin.activity.detail', $activity->id) }}" icon="eye">
+                            href="{{ route('activity.detail', $activity->id) }}" icon="eye">
                             View
                         </flux:button>
-                        <flux:button size="sm" variant="ghost" href="{{ route('admin.activity.edit', $activity->id) }}"
-                            icon="pencil">
-                            Edit
-                        </flux:button>
-                        <flux:button size="sm" variant="ghost" href="{{ route('admin.material.index', ['activity' => $activity->id]) }}"
+                        @role('admin')
+                            <flux:button size="sm" variant="ghost" href="{{ route('admin.activity.edit', $activity->id) }}"
+                                icon="pencil">
+                                Edit
+                            </flux:button>
+                        @endrole
+                        <flux:button size="sm" variant="ghost" href="{{ route('material.index', ['activity' => $activity->id]) }}"
                             icon="book-open">
                             Materi
                         </flux:button>
                     </div>
 
-                    <flux:button size="sm" variant="ghost" wire:click="deleteActivity({{ $activity->id }})"
-                        wire:confirm="Apakah Anda yakin ingin menghapus activity ini?" icon="trash"
-                        class="text-red-600 hover:text-red-700">
-                        Delete
-                    </flux:button>
+                    @role('admin')
+                        <flux:button size="sm" variant="ghost" wire:click="deleteActivity({{ $activity->id }})"
+                            wire:confirm="Apakah Anda yakin ingin menghapus activity ini?" icon="trash"
+                            class="text-red-600 hover:text-red-700">
+                            Delete
+                        </flux:button>
+                    @endrole
                 </div>
             </div>
         </div>
@@ -184,24 +190,31 @@ new class extends Component {
             </h3>
 
             <p class="text-gray-600 dark:text-gray-300 mb-6">
+                
                 @if($search)
                 Coba ubah kata kunci pencarian atau buat activity baru.
                 @else
-                Mulai dengan membuat activity pertama Anda untuk platform LMS Biologi.
+                    @role('admin')
+                        Mulai dengan membuat activity pertama Anda untuk platform LMS Biologi.
+                    @else
+                        Hubungi admin untuk membuat activity pertama Anda untuk platform LMS Biologi.
+                    @endrole
                 @endif
             </p>
 
-            <div class="flex gap-3 justify-center">
-                @if($search)
-                <flux:button variant="ghost" wire:click="$set('search', '')" icon="x-mark">
-                    Clear Search
-                </flux:button>
-                @endif
+            @role('admin')
+                <div class="flex gap-3 justify-center">
+                    @if($search)
+                    <flux:button variant="ghost" wire:click="$set('search', '')" icon="x-mark">
+                        Clear Search
+                    </flux:button>
+                    @endif
 
-                <flux:button href="{{ route('admin.activity.create') }}" variant="primary" icon="plus">
-                    Buat Activity Pertama
-                </flux:button>
-            </div>
+                    <flux:button href="{{ route('admin.activity.create') }}" variant="primary" icon="plus">
+                        Buat Activity Pertama
+                    </flux:button>
+                </div>
+            @endrole
         </div>
     </div>
     @endif

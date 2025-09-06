@@ -15,14 +15,14 @@ new class extends Component {
 
     public function previous(){
         $this->redirect(route(
-            'admin.material.detail', 
+            'material.detail', 
             ['activity' => $this->activity->id, 'material' => $this->material->previous()->id],
             ),
         );
     }
     public function next(){
         $this->redirect(route(
-            'admin.material.detail', 
+            'material.detail', 
             ['activity' => $this->activity->id, 'material' => $this->material->next()->id],
             ),
         );
@@ -31,9 +31,9 @@ new class extends Component {
 
 <div>
     <x-nav.breadcrumb>
-        <x-nav.breadcrumb-item title='Activities' href="{{ route('admin.activity') }}" />
+        <x-nav.breadcrumb-item title='Activities' href="{{ route('activity') }}" />
         <x-nav.breadcrumb-item title='{{ $activity->title }}'
-            href="{{ route('admin.activity.detail', ['activity' => $activity->id]) }}" />
+            href="{{ route('activity.detail', ['activity' => $activity->id]) }}" />
         <x-nav.breadcrumb-item title='{{ $material->title }}' />
     </x-nav.breadcrumb>
 
@@ -43,7 +43,6 @@ new class extends Component {
             <span class="text-sm block text-gray-400">{{$activity->title}}</span>
         </div>
         <flux:spacer />
-        @role('admin')
         <div class="flex-row gap-4 hidden md:flex">
             @if ($material->previous())
             <flux:button class="w-full" variant="outline" wire:click='previous' iconLeading='arrow-left'>
@@ -56,7 +55,6 @@ new class extends Component {
             </flux:button>
             @endif
         </div>
-        @endrole
     </div>
 
     <div class="my-4 md:my-8">
