@@ -28,6 +28,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         $validated['password'] = Hash::make($validated['password']);
 
         event(new Registered(($user = User::create($validated))));
+        $user->assignRole('user');
 
         Auth::login($user);
 
