@@ -111,7 +111,7 @@ new class extends Component {
                             </tr>
                         @endforeach
                     </tbody>
-                    </table>
+                </table>
             </div>
         </div>
     </div>
