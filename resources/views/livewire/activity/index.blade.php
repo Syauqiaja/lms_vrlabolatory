@@ -195,9 +195,9 @@ new class extends Component {
                 Coba ubah kata kunci pencarian atau buat activity baru.
                 @else
                     @role('admin')
-                        Mulai dengan membuat activity pertama Anda untuk platform LMS Biologi.
+                        Mulai dengan membuat activity pertama Anda untuk platform VR Laboratory.
                     @elserole
-                        Hubungi admin untuk membuat activity pertama Anda untuk platform LMS Biologi.
+                        Hubungi admin untuk membuat activity pertama Anda untuk platform VR Laboratory.
                     @endrole
                 @endif
             </p>

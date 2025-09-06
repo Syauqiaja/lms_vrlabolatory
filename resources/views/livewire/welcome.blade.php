@@ -20,7 +20,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             </h2>
 
             <p class="mb-8 leading-relaxed max-w-md mx-auto">
-                Bergabunglah dengan platform LMS Biologi untuk mengeksplorasi dunia biologi yang menakjubkan.
+                Bergabunglah dengan platform VR Laboratory untuk mengeksplorasi dunia biologi yang menakjubkan.
                 Akses materi pembelajaran, kuis interaktif, dan banyak lagi!
             </p>
 
