@@ -16,4 +16,12 @@ class Quiz extends Model
     public function activity(){
         return $this->belongsTo(Activity::class, 'related_activity_id');
     }
+
+    public function quizQuestions(){
+        return $this->hasMany(QuizQuestion::class, 'quiz_id');
+    }
+
+    public function userQuizResults(){
+        return $this->hasMany(UserQuizResult::class, 'quiz_id');
+    }
 }

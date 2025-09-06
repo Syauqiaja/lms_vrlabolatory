@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->integer('passing_grade')->nullable();
-            $table->foreignId('related_activity_id')->constrained('activities')->cascadeOnDelete();
+            $table->foreignId('related_activity_id')->nullable()->constrained('activities')->cascadeOnDelete();
             $table->timestamps();
         });
     }

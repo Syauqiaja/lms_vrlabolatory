@@ -14,6 +14,7 @@ class QuizQuestion extends Model
         'answer_b',
         'answer_c',
         'answer_d',
+        'correct_answer',
     ];
 
     public function quiz(){

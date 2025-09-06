@@ -21,7 +21,8 @@
             @role('admin')
                 <flux:navlist variant="outline">
                     <flux:navlist.group :heading="__('Admin')" class="grid">
-                        <flux:navlist.item icon="home" :href="route('admin.activity')" :current="request()->routeIs('admin.activity.*')" wire:navigate>{{ __('Activities') }}</flux:navlist.item>
+                        <flux:navlist.item icon="book-open" :href="route('admin.activity')" :current="request()->routeIs('admin.activity.*')" wire:navigate>{{ __('Activities') }}</flux:navlist.item>
+                        <flux:navlist.item icon="puzzle-piece" :href="route('admin.quiz')" :current="request()->routeIs('admin.quiz.*')" wire:navigate>{{ __('Quiz') }}</flux:navlist.item>
                     </flux:navlist.group>
                 </flux:navlist>
             @endrole
