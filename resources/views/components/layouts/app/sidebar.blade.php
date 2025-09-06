@@ -15,8 +15,10 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                    <flux:navlist.item icon="book-open" :href="route('activity')" :current="request()->routeIs('activity.*')" wire:navigate>{{ __('Activities') }}</flux:navlist.item>
-                    <flux:navlist.item icon="puzzle-piece" :href="route('quiz')" :current="request()->routeIs('quiz.*')" wire:navigate>{{ __('Quiz') }}</flux:navlist.item>
+                    @unlessrole('admin')
+                        <flux:navlist.item icon="book-open" :href="route('activity')" :current="request()->routeIs('activity.*')" wire:navigate>{{ __('Activities') }}</flux:navlist.item>
+                        <flux:navlist.item icon="puzzle-piece" :href="route('quiz')" :current="request()->routeIs('quiz.*')" wire:navigate>{{ __('Quiz') }}</flux:navlist.item>
+                    @endunlessrole
                 </flux:navlist.group>
             </flux:navlist>
 

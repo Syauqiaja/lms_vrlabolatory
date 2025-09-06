@@ -196,7 +196,7 @@ new class extends Component {
                 @else
                     @role('admin')
                         Mulai dengan membuat activity pertama Anda untuk platform LMS Biologi.
-                    @else
+                    @elserole
                         Hubungi admin untuk membuat activity pertama Anda untuk platform LMS Biologi.
                     @endrole
                 @endif
