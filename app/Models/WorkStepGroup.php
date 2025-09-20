@@ -15,4 +15,8 @@ class WorkStepGroup extends Model
     public function workSteps(){
         return $this->hasMany(WorkStep::class, 'work_step_group_id');
     }
+
+    public function fields(){
+        return $this->hasMany(WorkField::class, 'work_step_group_id');
+    }
 }

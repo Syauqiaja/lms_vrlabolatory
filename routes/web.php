@@ -28,6 +28,9 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('quiz', 'quiz.index')->name('quiz');
     Volt::route('quiz/{quiz}', 'quiz.detail')->name('quiz.detail');
     Volt::route('quiz/{quiz}/take', 'quiz.take-quiz')->name('quiz.take-quiz');
+
+    Volt::route('lab', 'lab.index')->name('lab');
+    Volt::route('lab/{workStepGroup}', 'lab.detail')->name('lab.detail');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function(){

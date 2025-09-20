@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\WorkField;
 use App\Models\WorkStep;
 use App\Models\WorkStepGroup;
+use Exception;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +34,18 @@ class WorkSeeder extends Seeder
                     ['order' => 9, 'title' => 'Catat volume NaOH yang terpakai.'],
                     ['order' => 10, 'title' => 'Lakukan titrasi sebanyak 2 kali untuk memperoleh hasil yang lebih akurat.'],
                 ],
+                "fields" => [
+                    [
+                        'title' => "Volume awal larutan NaOH",
+                        'type' => 'text',
+                        'order' => 4
+                    ],
+                    [
+                        'title' => 'Volume NaOH yang terpakai',
+                        'type' => 'text',
+                        'order' => 9,
+                    ]
+                ]
             ],
             [
                 'title' => 'Penentuan Konsentrasi Larutan Natrium Hidroksida (NaOH)',
@@ -48,6 +62,18 @@ class WorkSeeder extends Seeder
                     ['order' => 8, 'title' => 'Catat volume HCl yang terpakai.'],
                     ['order' => 9, 'title' => 'Lakukan titrasi sebanyak 2 kali untuk memperoleh hasil yang lebih akurat.'],
                 ],
+                "fields" => [
+                    [
+                        'title' => "Volume awal larutan HCL",
+                        'type' => 'text',
+                        'order' => 4
+                    ],
+                    [
+                        'title' => 'Volume HCL yang terpakai',
+                        'type' => 'text',
+                        'order' => 8,
+                    ]
+                ]
             ],
             [
                 'title' => 'Praktikum Mikroskop',
@@ -89,6 +115,28 @@ class WorkSeeder extends Seeder
                     ['order' => 33, 'title' => 'Putarlah revolver sehingga lensa objektif perbesarakan 4X berada tepat di atas lubang pada meja objetif.'],
                     ['order' => 34, 'title' => 'Cabutlah kabel mikroskop dari sumber listrik.'],
                     ['order' => 35, 'title' => 'Kembalikan mikroskop serta alat lainnya pada lemari dengan baik dan benar.'],
+                ],
+                'fields' => [
+                    [
+                        'title' => 'Capture objeck perbesaran 4x10',
+                        'type' => 'file',
+                        'order' => 14,
+                    ],
+                    [
+                        'title' => 'Capture objeck perbesaran 10x10',
+                        'type' => 'file',
+                        'order' => 19,
+                    ],
+                    [
+                        'title' => 'Capture objeck perbesaran 40x10',
+                        'type' => 'file',
+                        'order' => 24,
+                    ],
+                    [
+                        'title' => 'Capture objeck perbesaran 100x10',
+                        'type' => 'file',
+                        'order' => 30,
+                    ],
                 ]
             ],
             [
@@ -99,7 +147,14 @@ class WorkSeeder extends Seeder
                     ['order' => 1, 'title' => 'Letakkan benda pada bidang datar sejajar dengan skala penggaris.'],
                     ['order' => 2, 'title' => 'Baca panjang benda sesuai posisi ujung benda terhadap skala.'],
                     ['order' => 3, 'title' => 'Catat hasilnya dengan satuan cm.'],
-                ]
+                ],
+                'fields' => [
+                    [
+                        'title' => 'Hasil pengukuran',
+                        'type' => 'text',
+                        'order' => 3,
+                    ],
+                ],
             ],
             [
                 'title' => 'Pengukuran dengan Jangka Sorong',
@@ -111,7 +166,14 @@ class WorkSeeder extends Seeder
                     ['order' => 3, 'title' => 'Baca skala utama (di mm) tepat sebelum nol skala nonius.'],
                     ['order' => 4, 'title' => 'Cari garis skala nonius yang tepat sejajar dengan garis skala utama → itu nilai tambahan.'],
                     ['order' => 5, 'title' => 'Jumlahkan skala utama + skala nonius.'],
-                ]
+                ],
+                'fields' => [
+                    [
+                        'title' => 'Hasil pengukuran',
+                        'type' => 'text',
+                        'order' => 3,
+                    ],
+                ],
             ],
             [
                 'title' => 'Pengukuran dengan Mikrometer Sekrup',
@@ -124,7 +186,14 @@ class WorkSeeder extends Seeder
                     ['order' => 4, 'title' => 'Baca skala utama (mm) pada sleeve.'],
                     ['order' => 5, 'title' => 'Tambahkan bacaan skala putar (thimble).'],
                     ['order' => 6, 'title' => 'Jumlahkan hasilnya → ukuran sebenarnya.'],
-                ]
+                ],
+                'fields' => [
+                    [
+                        'title' => 'Hasil pengukuran',
+                        'type' => 'text',
+                        'order' => 3,
+                    ],
+                ],
             ]
         ];
         DB::beginTransaction();
@@ -140,6 +209,20 @@ class WorkSeeder extends Seeder
                     'title' => $stepData['title'],
                     'order' => $stepData['order'],
                     'work_step_group_id' => $workStepGroup->id
+                ]);
+            }
+            foreach ($groupData['fields'] as $fieldsData) {
+                $workStep = WorkStep::where('work_step_group_id', $workStepGroup->id)
+                    ->where('order', $fieldsData['order'])
+                    ->first();
+                if(!$workStep){
+                    throw new Exception("Work step with order ".$fieldsData['order']." of ".$workStepGroup->title." not exist");
+                }
+                WorkField::create([
+                    'title' => $fieldsData['title'],
+                    'type' => $fieldsData['type'],
+                    'work_step_group_id' => $workStepGroup->id,
+                    'work_step_id' => $workStep->id,
                 ]);
             }
         }

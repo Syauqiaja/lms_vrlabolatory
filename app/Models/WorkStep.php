@@ -18,4 +18,8 @@ class WorkStep extends Model
     public function userWorksCompletions(){
         return $this->hasMany(UserWorksCompletion::class, 'work_step_id');
     }
+
+    public function isCompleted(User $user){
+        return $this->userWorksCompletions()->where('user_id', $user)->first()?->isCompleted;
+    }
 }
