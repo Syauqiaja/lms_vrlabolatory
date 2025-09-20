@@ -16,6 +16,7 @@ class WorkStepIndexResource extends JsonResource
     {   
         $userWorksCompletion = $request->user() ? $this->userWorksCompletions()->where('user_id', $request->user()->id)->first() : null;
         return [
+            'id' => $this->id,
             'order' => $this->order,
             'title' => $this->title,
             'data' => [

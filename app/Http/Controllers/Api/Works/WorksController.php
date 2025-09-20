@@ -41,19 +41,17 @@ class WorksController extends Controller
             'data' => new WorkStepGroupIndexResource($workStepGroup)
         ]);
     }
+
     /**
      * Mark step as Complete
-     * @param \App\Models\WorkStepGroup $workStepGroup
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function completeStep(WorkStepGroup $workStepGroup, Request $request)
     {
         try {
             $request->validate([
-                'work_step_id' => 'required|exist:work_steps,id',
-                'is_complete' => 'required|boolean',
-                'result' => 'string',
+                'work_step_id' => 'required|int|exists:work_steps,id',
+                'is_completed' => 'required|boolean',
+                'result' => 'string|nullable',
             ]);
 
             if (!$workStepGroup->workSteps()->where('id', $request->work_step_id)->exists()) {

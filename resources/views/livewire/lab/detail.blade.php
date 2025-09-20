@@ -133,8 +133,8 @@ new class extends Component {
     <div class="relative flex flex-col items-start space-y-6 ml-5 mt-5">
         @foreach ($steps as $index => $step)
         @php
-        $isCompleted = $step?->isCompleted($user) ?? false;
-        $isNextCompleted = $index < count($steps) - 1 ? ($steps[$index + 1]?->isCompleted($user) ?? false) : false;
+            $isCompleted = $step->userWorksCompletions()->where('user_id', $user->id)->first()?->is_completed ?? false;
+            $isNextCompleted = $index < count($steps) - 1 ? ($steps[$index + 1]->userWorksCompletions()->where('user_id', $user->id)->first()?->is_completed ?? false) : false;
             @endphp
             <div class="flex items-center relative">
                 <!-- Vertical connecting line -->
@@ -173,8 +173,8 @@ new class extends Component {
 
             <!-- Modal panel -->
             <div
-                class="relative inline-block align-bottom bg-white dark:bg-zinc-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="bg-white dark:bg-zinc-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                class="relative inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                             <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4"

@@ -4,8 +4,8 @@
         @include('partials.head')
         @stack('styles')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+    <body class="min-h-screen bg-white dark:bg-gray-900">
+        <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
@@ -18,6 +18,7 @@
                     @unlessrole('admin')
                         <flux:navlist.item icon="book-open" :href="route('activity')" :current="request()->routeIs('activity.*')" wire:navigate>{{ __('Activities') }}</flux:navlist.item>
                         <flux:navlist.item icon="puzzle-piece" :href="route('quiz')" :current="request()->routeIs('quiz.*')" wire:navigate>{{ __('Quiz') }}</flux:navlist.item>
+                        <flux:navlist.item icon="beaker"  :href="route('lab')" :current="request()->routeIs('lab.*')" wire:navigate>{{ __('Lab') }}</flux:navlist.item>
                     @endunlessrole
                 </flux:navlist.group>
             </flux:navlist>
@@ -28,6 +29,7 @@
                         <flux:navlist.item icon="book-open" :href="route('admin.activity')" :current="request()->routeIs('admin.activity.*')" wire:navigate>{{ __('Activities') }}</flux:navlist.item>
                         <flux:navlist.item icon="puzzle-piece"  :href="route('admin.quiz')" :current="request()->routeIs('admin.quiz.*')" wire:navigate>{{ __('Quiz') }}</flux:navlist.item>
                         <flux:navlist.item icon="beaker"  :href="route('lab')" :current="request()->routeIs('lab.*')" wire:navigate>{{ __('Lab') }}</flux:navlist.item>
+                        <flux:navlist.item icon="user"  :href="route('admin.users')" :current="request()->routeIs('admin.users.*')" wire:navigate>{{ __('Students') }}</flux:navlist.item>
                     </flux:navlist.group>
                 </flux:navlist>
             @endrole
@@ -133,6 +135,7 @@
         {{ $slot }}
         <x-toaster-hub />
         @fluxScripts
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         @stack('scripts')
     </body>
 </html>

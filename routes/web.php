@@ -6,10 +6,6 @@ use Livewire\Volt\Volt;
 
 Volt::route('/', 'welcome')->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
@@ -31,6 +27,9 @@ Route::middleware(['auth'])->group(function () {
 
     Volt::route('lab', 'lab.index')->name('lab');
     Volt::route('lab/{workStepGroup}', 'lab.detail')->name('lab.detail');
+    Volt::route('user', 'users.detail')->name('user.detail');
+    Volt::route('dashboard', 'dashboard')
+        ->name('dashboard');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function(){
@@ -49,6 +48,8 @@ Route::middleware(['auth', 'role:admin'])->group(function(){
     Volt::route('admin/quiz/{quiz}', 'quiz.detail')->name('admin.quiz.detail');
     Route::delete('admin/quiz/{quiz}/destroy', [QuizController::class, 'destroy'])->name('admin.quiz.destroy');
     Volt::route('admin/quiz/{quiz}/edit', 'quiz.edit')->name('admin.quiz.edit');
+
+    Volt::route('admin/users', 'admin.users')->name('admin.users');
 });
 
 require __DIR__.'/auth.php';
