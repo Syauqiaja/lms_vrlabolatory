@@ -1,7 +1,7 @@
 <?php
 use Livewire\Volt\Component;
 use App\Models\WorkStepGroup;
-use App\Models\WorkStep;
+use App\Models\User;
 use App\Models\WorkFieldUser;
 use App\Models\UserWorkResult;
 use Livewire\WithFileUploads;
@@ -14,17 +14,14 @@ new class extends Component {
     public $fields = [];
     public $files = [];
     public $steps;
-
-    public $showEditDialog = false;
     public $editFields = [];
-
     public $showScoreDialog = false;
     public $score;
     public $note;
     
-    public function mount(WorkStepGroup $workStepGroup){
+    public function mount(WorkStepGroup $workStepGroup, User $user){
         $this->workStepGroup = $workStepGroup;
-        $this->user = Auth::user();
+        $this->user = $user;
         
         foreach ($workStepGroup->fields as $field) {
             $workFieldUser = WorkFieldUser::where('work_field_id', $field->id)
@@ -36,6 +33,7 @@ new class extends Component {
         
         $this->steps = $workStepGroup->workSteps;
 
+
         $userResult = UserWorkResult::where('work_step_group_id', $workStepGroup->id)
             ->where('user_id', $this->user->id)
             ->first();
@@ -44,19 +42,6 @@ new class extends Component {
             $this->note = $userResult->note;
         }
     }
-    
-    public function openEditDialog()
-    {
-        $this->editFields = $this->fields;
-        $this->showEditDialog = true;
-    }
-    
-    public function closeEditDialog()
-    {
-        $this->showEditDialog = false;
-        $this->editFields = [];
-    }
-
     
     public function saveFields()
     {
@@ -104,13 +89,37 @@ new class extends Component {
         
         session()->flash('message', 'Hasil praktikum berhasil disimpan!');
     }
+
+
+    public function openScoreDialog()
+    {
+        $this->showScoreDialog = true;
+    }
+    
+    public function closeScoreDialog()
+    {
+        $this->showScoreDialog = false;
+    }
+    public function saveScore(){
+        UserWorkResult::updateOrCreate([
+            'work_step_group_id' => $this->workStepGroup->id,
+            'user_id' => $this->user->id,
+        ], [
+            'score' => $this->score,
+            'note' => $this->note
+        ]);
+        $this->closeScoreDialog();
+        
+        session()->flash('message', 'Nilai praktikum berhasil disimpan!');
+    }
 }; ?>
 
 <div>
-    <x-nav.breadcrumb>
-        <x-nav.breadcrumb-item title='Lab' :href="route('lab')" />
-        <x-nav.breadcrumb-item title='{{ $workStepGroup->title}}' />
-    </x-nav.breadcrumb>
+    <div class="flex items-center space-x-4 mb-4">
+        <flux:button href="{{ route('admin.user.detail', ['user' => $user->id]) }}" variant="ghost" size="sm" icon="arrow-left">
+            Back to User Detail
+        </flux:button>
+    </div>
 
     <!-- Success Message -->
     @if (session()->has('message'))
@@ -120,16 +129,13 @@ new class extends Component {
     @endif
 
     <div class="p-5 bg-blue-200 dark:bg-white/5 rounded-xl">
-        <div class="flex">
+        <div class="flex justify-between">
             <h4 class="text-xl font-semibold">Hasil Praktikum</h4>
-            <flux:spacer></flux:spacer>
-            <flux:button icon="pencil" wire:click="openEditDialog">Ubah Hasil</flux:button>
-            @role('admin')
             <flux:button icon="star" wire:click="openScoreDialog" class="ms-3">Beri Penilaian</flux:button>
-            @endrole
         </div>
         <x-work-step-result :workStepGroup='$workStepGroup' :files='$files' :fields='$fields' />
     </div>
+
     @if ($score || $note)
     <div class="p-5 bg-blue-200 dark:bg-white/5 rounded-xl mt-4">
         <div>
@@ -147,8 +153,7 @@ new class extends Component {
     <h4 class="text-xl font-semibold mt-5">Progress Praktikum</h4>
     <x-work-step-indicator :steps='$steps' :user="$user" />
 
-    <!-- Edit Dialog Modal -->
-    @if ($showEditDialog)
+    @if ($showScoreDialog)
     <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <!-- Background overlay -->
@@ -162,37 +167,31 @@ new class extends Component {
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                             <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4"
                                 id="modal-title">
-                                Edit Hasil Praktikum
+                                Beri Penialaian Praktikum
                             </h3>
 
                             <form wire:submit.prevent="saveFields">
-                                @foreach ($workStepGroup->fields as $field)
                                 <div class="mb-8">
-                                    <label for="field_{{ $field->id }}"
+                                    <label for="score"
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
-                                        {{ $field->title }}
+                                        Nilai Praktikum (0 - 100)
                                     </label>
-                                    @if ($field->type === 'file')
-                                    <flux:input type="file" id="field_{{ $field->id }}"
-                                        wire:model="editFields.{{ $field->id }}" />
-                                    @if ($files[$field->id])
-                                    <flux:button variant="{{ $files[$field->id] ? 'outline' : 'ghost' }}" size="sm"
-                                        :icon="$files[$field->id] ? 'document' : null"
-                                        :href="$files[$field->id] ? Storage::url($files[$field->id]) : null"
-                                        :target="$files[$field->id] ? '_blank' : null" :disabled="!$files[$field->id]"
-                                        class="{{ $files[$field->id] ? 'hover:text-blue-300 mt-3' : 'text-gray-700 dark:text-gray-400 cursor-not-allowed mt-3' }}">
-                                        {{ $files[$field->id] ? 'File saat ini' : '- Belum terisi -'}}
-                                    </flux:button>
-                                    @endif
-                                    @else
-                                    <flux:input type="text" id="field_{{ $field->id }}"
-                                        wire:model="editFields.{{ $field->id }}" placeholder="Masukkan hasil" />
-                                    @endif
-                                    @error("editFields.{$field->id}")
+                                    <flux:input type="number" id="score" wire:model="score"
+                                        placeholder="Masukkan nilai praktikum" />
+                                    @error("score")
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                @endforeach
+                                <div class="mb-8">
+                                    <label for="note"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
+                                        Note
+                                    </label>
+                                    <flux:textarea wire:model='note'></flux:textarea>
+                                    @error("note")
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -200,8 +199,8 @@ new class extends Component {
 
                 <!-- Modal footer -->
                 <div class="bg-gray- px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-3">
-                    <flux:button type="button" variant="primary" wire:click='saveFields'>Simpan</flux:button>
-                    <flux:button type="button" variant="outline" wire:click='closeEditDialog'>Batal</flux:button>
+                    <flux:button type="button" variant="primary" wire:click='saveScore'>Simpan</flux:button>
+                    <flux:button type="button" variant="outline" wire:click='closeScoreDialog'>Batal</flux:button>
                 </div>
             </div>
         </div>

@@ -50,6 +50,8 @@ Route::middleware(['auth', 'role:admin'])->group(function(){
     Volt::route('admin/quiz/{quiz}/edit', 'quiz.edit')->name('admin.quiz.edit');
 
     Volt::route('admin/users', 'admin.users')->name('admin.users');
+    Volt::route('admin/users/{user}', 'admin.users.detail')->name('admin.user.detail');
+    Volt::route('admin/users/{user}/lab/{workStepGroup}', 'admin.users.lab')->name('admin.users.lab');
 });
 
 require __DIR__.'/auth.php';
