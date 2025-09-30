@@ -66,7 +66,7 @@ new class extends Component {
         <x-nav.breadcrumb-item title='Activities' />
     </x-nav.breadcrumb>
 
-    @role('admin')
+    @hasrole('admin')
         <div class="flex items-center mb-8">
             <div>
                 <span class="font-semibold text-xl block">Activities</span>
@@ -143,7 +143,7 @@ new class extends Component {
                             href="{{ route('activity.detail', $activity->id) }}" icon="eye">
                             View
                         </flux:button>
-                        @role('admin')
+                        @hasrole('admin')
                             <flux:button size="sm" variant="ghost" href="{{ route('admin.activity.edit', $activity->id) }}"
                                 icon="pencil">
                                 Edit
@@ -155,13 +155,13 @@ new class extends Component {
                         </flux:button>
                     </div>
 
-                    @role('admin')
+                    @hasrole('admin')
                         <flux:button size="sm" variant="ghost" wire:click="deleteActivity({{ $activity->id }})"
                             wire:confirm="Apakah Anda yakin ingin menghapus activity ini?" icon="trash"
                             class="text-red-600 hover:text-red-700">
                             Delete
                         </flux:button>
-                    @endrole
+                    @endhasrole
                 </div>
             </div>
         </div>
@@ -194,15 +194,15 @@ new class extends Component {
                 @if($search)
                 Coba ubah kata kunci pencarian atau buat activity baru.
                 @else
-                    @role('admin')
+                    @hasrole('admin')
                         Mulai dengan membuat activity pertama Anda untuk platform VR Laboratory.
-                    @elserole
+                    @else
                         Hubungi admin untuk membuat activity pertama Anda untuk platform VR Laboratory.
-                    @endrole
+                    @endhasrole
                 @endif
             </p>
 
-            @role('admin')
+            @hasrole('admin')
                 <div class="flex gap-3 justify-center">
                     @if($search)
                     <flux:button variant="ghost" wire:click="$set('search', '')" icon="x-mark">
@@ -214,7 +214,7 @@ new class extends Component {
                         Buat Activity Pertama
                     </flux:button>
                 </div>
-            @endrole
+            @endhasrole
         </div>
     </div>
     @endif

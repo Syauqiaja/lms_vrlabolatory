@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Quiz\QuizController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -52,6 +53,10 @@ Route::middleware(['auth', 'role:admin'])->group(function(){
     Volt::route('admin/users', 'admin.users')->name('admin.users');
     Volt::route('admin/users/{user}', 'admin.users.detail')->name('admin.user.detail');
     Volt::route('admin/users/{user}/lab/{workStepGroup}', 'admin.users.lab')->name('admin.users.lab');
+});
+
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
 });
 
 require __DIR__.'/auth.php';
