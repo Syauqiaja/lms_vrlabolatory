@@ -24,8 +24,8 @@ new class extends Component {
         
         if ($this->isAdmin) {
             // Admin statistics
-            $this->stat1 = Activity::count();
-            $this->stat1Label = 'Total Aktivitas';
+            $this->stat1 = WorkStepGroup::count();
+            $this->stat1Label = 'Total Praktikum';
             
             $this->stat2 = Quiz::count();
             $this->stat2Label = 'Total Quiz';
