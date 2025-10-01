@@ -18,4 +18,7 @@ class WorkStep extends Model
     public function userWorksCompletions(){
         return $this->hasMany(UserWorksCompletion::class, 'work_step_id');
     }
+    public function field(){
+        return $this->hasOne(WorkField::class, 'work_step_id');
+    }
 }

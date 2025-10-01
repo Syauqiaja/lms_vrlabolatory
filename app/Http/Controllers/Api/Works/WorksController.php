@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Works\WorkStepGroupIndexResource;
 use App\Http\Resources\Works\WorkStepIndexResource;
 use App\Models\UserWorksCompletion;
+use App\Models\WorkField;
+use App\Models\WorkFieldUser;
 use App\Models\WorkStep;
 use App\Models\WorkStepGroup;
 use Illuminate\Http\Request;
@@ -82,6 +84,48 @@ class WorksController extends Controller
             'status' => true,
             'message' => 'User work step progress updated',
             'data' => new WorkStepIndexResource($workStep)
+        ]);
+    }
+
+    /**
+     * Upload work result capture
+     */
+    public function uploadFile(WorkStepGroup $workStepGroup, Request $request)
+    {
+        try {
+            $request->validate([
+                'work_field_id' => 'required|int|exists:work_fields,id',
+                'file' => 'required|file',
+            ]);
+
+            if (!$workStepGroup->fields()->where('id', $request->work_field_id)->exists()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The work field with id : '.$request->work_field_id.' is not a child of '.$workStepGroup->title,
+                ], 400);
+            }
+            
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => collect($e->errors())->flatten()->first()
+            ], 400);
+        }
+
+        $workField = WorkField::find($request->work_field_id);
+        $path = $request->file('file')->store('praktikum', 'public');
+
+        WorkFieldUser::updateOrCreate([
+            'user_id' => $request->user()->id,
+            'work_field_id' => $workField->id,
+        ], [
+            'file' => $path
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User progress updated',
+            'data' => new WorkStepIndexResource($workField->workStep)
         ]);
     }
 }

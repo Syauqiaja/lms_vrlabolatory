@@ -17,5 +17,6 @@ Route::prefix('/')->group(function(){
         Route::get('/works', [WorksController::class, 'index']);
         Route::get('/works/{workStepGroup}', [WorksController::class, 'show']);
         Route::post('/works/{workStepGroup}/complete-step', [WorksController::class, 'completeStep']);
+        Route::post('/works/{workStepGroup}/upload-file', [WorksController::class, 'uploadFile']);
     });
 });
