@@ -30,18 +30,16 @@ class WorkStepIndexResource extends JsonResource
             'order' => $this->order,
             'title' => $this->title,
             'data' => [
-                'is_completed' => $userWorksCompletion?->is_completed ?? false,
+                'is_completed' => $userWorksCompletion?->is_completed == 1,
                 'note' => $userWorksCompletion?->note,
-                'result' => $userWorksCompletion?->result,
+                'result' => $userField?->text,
+                'file' => $userField?->file ? url(Storage::url($userField?->file)) : null,
+                'score' => $userField?->score,
             ],
             'field' => $workField ? [
                 'id' => $workField->id,
                 'title' => $workField->title,
-                'result' => $userField ? [
-                    'file' => $userField?->file ? url(Storage::url($userField?->file)) : null,
-                    'text' => $userField?->text,
-                    'score' => $userField?->score,
-                ] : null
+                'type' => $workField->type,
             ] : null
         ];
     }

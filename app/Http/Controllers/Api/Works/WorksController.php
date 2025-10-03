@@ -53,16 +53,15 @@ class WorksController extends Controller
             $request->validate([
                 'work_step_id' => 'required|int|exists:work_steps,id',
                 'is_completed' => 'required|boolean',
-                'result' => 'string|nullable',
+                'result' => 'nullable|string'
             ]);
 
             if (!$workStepGroup->workSteps()->where('id', $request->work_step_id)->exists()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'The work step with id : '.$request->work_step_id.' is not a child of '.$workStepGroup->title,
+                    'message' => 'The work step with id : ' . $request->work_step_id . ' is not a child of ' . $workStepGroup->title,
                 ], 400);
             }
-            
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
@@ -72,13 +71,30 @@ class WorksController extends Controller
 
         $workStep = WorkStep::find($request->work_step_id);
 
+        if ($workStep->field?->type == 'text') {
+            if (!$request->result) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'This step completion requires a text result',
+                ], 400);
+            }
+
+            WorkFieldUser::updateOrCreate([
+                'user_id' => $request->user()->id,
+                'work_field_id' => $workStep->field?->id,
+            ], [
+                'text' => $request->result
+            ]);
+        }
+
         UserWorksCompletion::updateOrCreate([
             'user_id' => $request->user()->id,
             'work_step_id' => $workStep->id,
         ], [
-            'is_completed' => $request->is_completed,
-            'result' => $request->result,
+            'is_completed' => $request->is_completed
         ]);
+
+
 
         return response()->json([
             'status' => true,
@@ -101,10 +117,9 @@ class WorksController extends Controller
             if (!$workStepGroup->fields()->where('id', $request->work_field_id)->exists()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'The work field with id : '.$request->work_field_id.' is not a child of '.$workStepGroup->title,
+                    'message' => 'The work field with id : ' . $request->work_field_id . ' is not a child of ' . $workStepGroup->title,
                 ], 400);
             }
-            
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
@@ -113,7 +128,7 @@ class WorksController extends Controller
         }
 
         $workField = WorkField::find($request->work_field_id);
-        $path = $request->file('file')->store('praktikum', 'public');
+        $path = $request->file('file')?->store('praktikum', 'public');
 
         WorkFieldUser::updateOrCreate([
             'user_id' => $request->user()->id,
