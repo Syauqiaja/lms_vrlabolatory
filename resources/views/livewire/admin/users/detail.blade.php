@@ -1,9 +1,11 @@
 <?php
 use Livewire\Volt\Component;
+use Livewire\Attributes\On;
 use App\Models\User;
 use App\Models\Quiz;
 use App\Models\UserQuizResult;
 use App\Models\WorkStepGroup;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 new class extends Component {
@@ -49,6 +51,11 @@ new class extends Component {
             "data" => $data
         ];
     }
+
+    #[On('user-updated')]
+    public function onUserUpdated(){
+        $this->user = User::find($this->user->id);
+    }
     
     public function openEditModal()
     {
@@ -90,7 +97,7 @@ new class extends Component {
         $this->showPasswordModal = false;
         $this->reset(['newPassword', 'confirmPassword']);
     }
-    
+
     public function updatePassword()
     {
         $this->validate([
@@ -133,7 +140,7 @@ new class extends Component {
     {
         $this->user->delete();
         $this->dispatch('user-deleted', 'User deleted successfully!');
-        return redirect()->route('users.index');
+        return redirect()->route('admin.users');
     }
     
     public function getRecentActivity()
@@ -199,46 +206,64 @@ new class extends Component {
                 <!-- Actions -->
                 <div class="flex flex-wrap gap-3">
                     <flux:button wire:click="openEditModal" variant="primary" size="sm">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                            </path>
-                        </svg>
-                        Edit User
+                        <div class="flex">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                </path>
+                            </svg>
+                            <div>
+                                Edit User
+                            </div>
+                        </div>
                     </flux:button>
 
-                    <flux:button wire:click="openPasswordModal" variant="outline" size="sm">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 7a2 2 0 012 2m0 0a2 2 0 012 2m-2-2h3m-9 8h10a2 2 0 002-2V9a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                        Change Password
-                    </flux:button>
+                    {{-- <flux:button wire:click="openPasswordModal" variant="outline" size="sm">
+                        <div class="flex">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 7a2 2 0 012 2m0 0a2 2 0 012 2m-2-2h3m-9 8h10a2 2 0 002-2V9a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <div>
+                                Change Password
+                            </div>
+                        </div>
+                    </flux:button> --}}
 
                     <flux:button wire:click="toggleEmailVerification" variant="outline" size="sm">
-                        @if($user->email_verified_at)
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                        Remove Verification
-                        @else
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        Mark as Verified
-                        @endif
+                        <div class="flex">
+                            @if($user->email_verified_at)
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                Remove Verification
+                            </div>
+                            @else
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                Mark as Verified
+                            </div>
+                            @endif
+                        </div>
                     </flux:button>
 
                     <flux:button wire:click="openDeleteModal" variant="danger" size="sm">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                            </path>
-                        </svg>
-                        Delete User
+                        <div class="flex">  
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+                            <div>
+                                Delete User
+                            </div>
+                        </div>
                     </flux:button>
                 </div>
             </div>

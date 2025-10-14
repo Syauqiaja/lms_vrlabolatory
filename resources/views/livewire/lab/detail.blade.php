@@ -123,10 +123,6 @@ new class extends Component {
         <div class="flex">
             <h4 class="text-xl font-semibold">Hasil Praktikum</h4>
             <flux:spacer></flux:spacer>
-            {{-- <flux:button icon="pencil" wire:click="openEditDialog">Ubah Hasil</flux:button> --}}
-            @role('admin')
-            <flux:button icon="star" wire:click="openScoreDialog" class="ms-3">Beri Penilaian</flux:button>
-            @endrole
         </div>
         <x-work-step-result :workStepGroup='$workStepGroup' :files='$files' :fields='$fields' />
     </div>

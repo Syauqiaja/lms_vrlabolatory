@@ -102,6 +102,9 @@ new class extends Component {
 <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
     <h5 class="text-3xl font-medium">Selamat Datang</h5>
     <h5 class="text-2xl font-medium">{{Auth::user()->name}}</h5>
+    @if (!Auth::user()->hasVerifiedEmail())
+        <livewire:users.email-verification-banner></livewire:users.email-verification-banner>
+    @endif
     @if($isAdmin)
         <span class="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-3 py-1 text-sm font-medium text-blue-800 dark:text-blue-200 w-fit">
             Administrator
@@ -130,7 +133,7 @@ new class extends Component {
     </div>
 </div>
 
-@push('scripts')
+@pushOnce('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     initChart();
@@ -182,4 +185,4 @@ function initChart() {
     });
 }
 </script>
-@endpush
+@endPushOnce
