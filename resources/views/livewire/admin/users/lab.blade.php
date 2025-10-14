@@ -42,54 +42,6 @@ new class extends Component {
             $this->note = $userResult->note;
         }
     }
-    
-    public function saveFields()
-    {
-        $this->validate([
-            'editFields.*' => 'nullable',
-        ]);
-        
-        foreach ($this->workStepGroup->fields as $field) {
-            if($field->type == 'text'){
-                $values = [
-                    'text' => $this->editFields[$field->id] ?? null,
-                ];
-            }else{
-                $path = $this->editFields[$field->id] ? $this->editFields[$field->id]->store('praktikum') : null;
-                if($path){
-                    $values = [
-                        'file' => $this->editFields[$field->id] ? $path : null,
-                    ];
-                }else{
-                    $values = null;
-                }
-            }
-
-            if(@$values){
-                $workFieldUser = WorkFieldUser::updateOrCreate(
-                    [
-                        'work_field_id' => $field->id,
-                        'user_id' => $this->user->id,
-                    ],
-                    $values
-                );
-            }
-        }
-        
-        // Refresh the fields data
-        foreach ($this->workStepGroup->fields as $field) {
-            $workFieldUser = WorkFieldUser::where('work_field_id', $field->id)
-                ->where('user_id', $this->user->id)
-                ->first();
-            $this->fields[$field->id] = $workFieldUser?->text;
-            $this->files[$field->id] = $workFieldUser?->file;
-        }
-        
-        $this->closeEditDialog();
-        
-        session()->flash('message', 'Hasil praktikum berhasil disimpan!');
-    }
-
 
     public function openScoreDialog()
     {

@@ -33,6 +33,7 @@ class WorkSeeder extends Seeder
                     ['order' => 8, 'title' => 'Hentikan titrasi segera setelah larutan berubah warna.'],
                     ['order' => 9, 'title' => 'Catat volume NaOH yang terpakai.'],
                     ['order' => 10, 'title' => 'Lakukan titrasi sebanyak 2 kali untuk memperoleh hasil yang lebih akurat.'],
+                    ['order' => 11, 'title' => 'Catat volume NaOH setelah titrasi kedua'],
                 ],
                 "fields" => [
                     [
@@ -41,10 +42,15 @@ class WorkSeeder extends Seeder
                         'order' => 4
                     ],
                     [
-                        'title' => 'Volume NaOH yang terpakai',
+                        'title' => 'Volume NaOH titrasi pertama',
                         'type' => 'text',
                         'order' => 9,
-                    ]
+                    ],
+                    [
+                        'title' => 'Volume NaOH titrasi kedua',
+                        'type' => 'text',
+                        'order' => 11,
+                    ],
                 ]
             ],
             [
@@ -61,6 +67,7 @@ class WorkSeeder extends Seeder
                     ['order' => 7, 'title' => 'Titrasi larutan dalam erlenmeyer dengan larutan HCl 1 M di dalam buret hingga terjadi perubahan warna.'],
                     ['order' => 8, 'title' => 'Catat volume HCl yang terpakai.'],
                     ['order' => 9, 'title' => 'Lakukan titrasi sebanyak 2 kali untuk memperoleh hasil yang lebih akurat.'],
+                    ['order' => 10, 'title' => 'Catat volume HCl setelah titrasi kedua'],
                 ],
                 "fields" => [
                     [
@@ -69,9 +76,14 @@ class WorkSeeder extends Seeder
                         'order' => 4
                     ],
                     [
-                        'title' => 'Volume HCL yang terpakai',
+                        'title' => 'Volume HCL titrasi pertama',
                         'type' => 'text',
                         'order' => 8,
+                    ],
+                    [
+                        'title' => 'Volume HCL titrasi kedua',
+                        'type' => 'text',
+                        'order' => 10,
                     ]
                 ]
             ],

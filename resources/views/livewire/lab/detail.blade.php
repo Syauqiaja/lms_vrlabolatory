@@ -70,7 +70,7 @@ new class extends Component {
                     'text' => $this->editFields[$field->id] ?? null,
                 ];
             }else{
-                $path = $this->editFields[$field->id] ? $this->editFields[$field->id]->store('praktikum') : null;
+                $path = $this->editFields[$field->id] ? $this->editFields[$field->id]->store('praktikum', 'public') : null;
                 if($path){
                     $values = [
                         'file' => $this->editFields[$field->id] ? $path : null,
@@ -123,7 +123,7 @@ new class extends Component {
         <div class="flex">
             <h4 class="text-xl font-semibold">Hasil Praktikum</h4>
             <flux:spacer></flux:spacer>
-            <flux:button icon="pencil" wire:click="openEditDialog">Ubah Hasil</flux:button>
+            {{-- <flux:button icon="pencil" wire:click="openEditDialog">Ubah Hasil</flux:button> --}}
             @role('admin')
             <flux:button icon="star" wire:click="openScoreDialog" class="ms-3">Beri Penilaian</flux:button>
             @endrole
@@ -172,22 +172,19 @@ new class extends Component {
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                                         {{ $field->title }}
                                     </label>
-                                    @if ($field->type === 'file')
-                                    <flux:input type="file" id="field_{{ $field->id }}"
-                                        wire:model="editFields.{{ $field->id }}" />
                                     @if ($files[$field->id])
                                     <flux:button variant="{{ $files[$field->id] ? 'outline' : 'ghost' }}" size="sm"
                                         :icon="$files[$field->id] ? 'document' : null"
                                         :href="$files[$field->id] ? Storage::url($files[$field->id]) : null"
                                         :target="$files[$field->id] ? '_blank' : null" :disabled="!$files[$field->id]"
-                                        class="{{ $files[$field->id] ? 'hover:text-blue-300 mt-3' : 'text-gray-700 dark:text-gray-400 cursor-not-allowed mt-3' }}">
+                                        class="{{ $files[$field->id] ? 'hover:text-blue-300 mt-3 mb-3' : 'text-gray-700 dark:text-gray-400 cursor-not-allowed mt-3 mb-3' }}">
                                         {{ $files[$field->id] ? 'File saat ini' : '- Belum terisi -'}}
                                     </flux:button>
                                     @endif
-                                    @else
-                                    <flux:input type="text" id="field_{{ $field->id }}"
+                                    <flux:input type="file" id="field_{{ $field->id }}"
+                                        wire:model="editFields.{{ $field->id }}" />
+                                    <flux:input class="mt-3" type="text" id="field_{{ $field->id }}"
                                         wire:model="editFields.{{ $field->id }}" placeholder="Masukkan hasil" />
-                                    @endif
                                     @error("editFields.{$field->id}")
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror

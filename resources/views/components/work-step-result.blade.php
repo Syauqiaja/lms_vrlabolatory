@@ -6,17 +6,25 @@
     @foreach ($workStepGroup->fields as $field)
     <div class="mb-5 w-100">
         <h5 class="mb-2">{{$field->title}}</h5>
-        @if ($field->type == 'text')
-        <p class="text-gray-400">{{$fields[$field->id] ?? '- Belum terisi -'}}</p>
-        @else
-        <flux:button variant="{{ $files[$field->id] ? 'outline' : 'ghost' }}" size="sm"
-            :icon="$files[$field->id] ? 'document' : null"
-            :href="$files[$field->id] ? Storage::url($files[$field->id]) : null"
-            :target="$files[$field->id] ? '_blank' : null" :disabled="!$files[$field->id]"
-            class="{{ $files[$field->id] ? 'hover:text-blue-300' : 'text-gray-700 dark:text-gray-400 cursor-not-allowed' }}">
-            {{ $files[$field->id] ? 'Buka hasil ' . $field->title : '- Belum terisi -' }}
-        </flux:button>
-        @endif
+        <div>
+            @if ($fields[$field->id])
+            <p class="text-gray-400">{{$fields[$field->id]}}</p>
+            @elseif ($field->type == 'text')
+            <p class="text-gray-400">- Belum terisi -</p>
+            @endif
+        </div>
+        
+        <div class="mt-5">
+            @if($files[$field->id])
+                <div class="max-h-48">
+                    <a href="{{ Storage::url($files[$field->id]) }}" target="_blank">
+                        <img class="max-h-48" src="{{ Storage::url($files[$field->id]) }}" alt="{{ basename(Storage::url($files[$field->id])) }}" srcset="">
+                    </a>
+                </div>
+            @elseif($field->type == 'file')
+                <p class="text-gray-400">- Belum terisi -</p>
+            @endif
+        </div>
     </div>
     @endforeach
 </div>
