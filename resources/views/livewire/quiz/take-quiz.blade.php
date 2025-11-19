@@ -75,7 +75,7 @@ new class extends Component {
             
             // Determine correct answer (you may need to add a 'correct_answer' field to your QuizQuestion model)
             // For now, assuming answer_a is always correct - you should modify this logic
-            if ($userAnswer && $userAnswer === $question->correct_answer) {
+            if ($userAnswer && strtolower($userAnswer) === strtolower($question->correct_answer)) {
                 $isCorrect = true;
                 $correctAnswers++;
             }
@@ -91,12 +91,11 @@ new class extends Component {
         }
         
         $this->score = round(($correctAnswers / $this->totalQuestions) * 100);
-        
+
         // Save quiz result
-        UserQuizResult::updateOrCreate([
+        UserQuizResult::create([
             'user_id' => Auth::id(),
             'quiz_id' => $this->quiz->id,
-        ], [
             'score' => $this->score,
             'note' => $this->score >= ($this->quiz->passing_grade ?? 0) ? 'Passed' : 'Failed',
         ]);
