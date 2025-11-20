@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Quiz\QuizController;
+use App\Http\Controllers\CertificateController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -9,6 +10,9 @@ Volt::route('/', 'welcome')->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
+
+    Route::get('certificate/{workStepGroup}/{user}', [CertificateController::class, 'generate'])->name('certificate.generate');
+    Route::get('certificate/{workStepGroup}/{user}/test', [CertificateController::class, 'test'])->name('certificate.generate.test');
 
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/password', 'settings.password')->name('settings.password');

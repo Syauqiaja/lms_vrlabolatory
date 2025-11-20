@@ -193,7 +193,7 @@ new class extends Component {
                         <div>
                             File tugas saat ini
                         </div>
-                    </a>    
+                    </a>
                     @else
                     <span class="text-gray-500">Tugas belum dikumpulkan</span>
                     @endif
@@ -204,17 +204,7 @@ new class extends Component {
     </div>
 
     @if ($score || $note)
-    <div class="p-5 bg-blue-200 dark:bg-white/5 rounded-xl mt-4">
-        <div>
-            <h4 class="text-xl font-semibold">Penilaian</h4>
-            <div class="mt-3 w-100">
-                <h5 class="mb-2">Score</h5>
-                <p class="text-gray-400">{{$score ?? '- Belum terisi -'}}</p>
-                <h5 class="mb-2">Note</h5>
-                <p class="text-gray-400">{{$note ?? '- Tidak ada note -'}}</p>
-            </div>
-        </div>
-    </div>
+    <x-user-work-score-section :note="$note" :score="$score" :user="$user" :workStepGroup="$workStepGroup" />
     @endif
 
     <h4 class="text-xl font-semibold mt-5">Progress Praktikum</h4>
