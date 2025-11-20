@@ -53,7 +53,7 @@ new class extends Component {
                 \DB::raw('MAX(user_quiz_results.score) as highest_score'),
                 \DB::raw('MAX(user_quiz_results.updated_at) as last_attempt')
             )
-            ->groupBy('users.id', 'users.name', 'users.email', 'users.created_at', 'users.updated_at', 'users.email_verified_at')
+            ->groupBy('users.id', 'users.name', 'users.email', 'users.password', 'users.created_at', 'users.updated_at', 'users.email_verified_at', 'users.remember_token')
             ->with(['roles']);
 
         // Apply sorting

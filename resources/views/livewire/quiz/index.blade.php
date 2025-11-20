@@ -36,11 +36,11 @@ new class extends Component {
             <span class="text-sm block text-gray-400">Quizzez that you might try</span>
         </div>
         <flux:spacer />
-        @role('admin')
+        @hasrole('admin')
             <flux:button href="{{ route('admin.quiz.create') }}" icon='plus' variant="primary">
                 Add Quiz
             </flux:button>
-        @endrole
+        @endhasrole
     </div>
 
     <!-- Search and Filter Bar -->
@@ -54,13 +54,11 @@ new class extends Component {
     <div class="grid grid-cols-2 gap-4 items-start sm:items-center mb-8">
     @for ($i = 0; $i < count($quizzes); $i++)
     <div class="col-span-2 md:col-span-1 p-4 border border-gray-300/30 rounded-md flex gap-3 items-center hover:bg-blue-50/10 relative">
-        <a 
-        @role('admin')
-        href="{{ route('admin.quiz.detail', ['quiz' => $quizzes[$i]->id]) }}" 
-        @elserole
-        href="{{ route('quiz.detail', ['quiz' => $quizzes[$i]->id]) }}" 
-        @endrole
-        class="flex-1 flex gap-3 items-center">
+        @hasrole('admin')
+            <a href="{{ route('admin.quiz.detail', ['quiz' => $quizzes[$i]->id]) }}" class="flex-1 flex gap-3 items-center">
+        @else
+            <a href="{{ route('quiz.detail', ['quiz' => $quizzes[$i]->id]) }}" class="flex-1 flex gap-3 items-center">
+        @endhasrole
             <div class="flex-1">
                 <div class="text-start font-semibold">
                     {{ $quizzes[$i]->title }}
@@ -77,7 +75,7 @@ new class extends Component {
                 </div>
             </div>
         </a>
-        @role('admin')
+        @hasrole('admin')
             <!-- Three-dot menu -->
             <div class="relative" x-data="{ open: false }">
                 <button @click="open = !open" @click.away="open = false" 
@@ -119,7 +117,7 @@ new class extends Component {
                     </form>
                 </div>
             </div>
-        @endrole
+        @endhasrole
     </div>
     @endfor
 </div>

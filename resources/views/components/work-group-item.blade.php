@@ -3,10 +3,12 @@
 )
 
 <div class="grid grid-cols-2 gap-4 items-start sm:items-center mb-8">
-    @for ($i = 0; $i < count($workStepGroups); $i++) <a @role('admin')
-        href="{{ route('admin.lab.detail', ['workStepGroup' => $workStepGroups[$i]->id]) }}" @elserole
-        href="{{ route('lab.detail', ['workStepGroup' => $workStepGroups[$i]->id]) }}" @endrole
-        class="col-span-2 md:col-span-1 p-4 border border-gray-300/30 rounded-md flex gap-3 items-center hover:bg-blue-50/10">
+    @for ($i = 0; $i < count($workStepGroups); $i++) 
+        @hasrole('admin')
+            <a href="{{ route('admin.lab.detail', ['workStepGroup' => $workStepGroups[$i]->id]) }}" class="col-span-2 md:col-span-1 p-4 border border-gray-300/30 rounded-md flex gap-3 items-center hover:bg-blue-50/10">
+        @else
+            <a href="{{ route('lab.detail', ['workStepGroup' => $workStepGroups[$i]->id]) }}" class="col-span-2 md:col-span-1 p-4 border border-gray-300/30 rounded-md flex gap-3 items-center hover:bg-blue-50/10">
+        @endhasrole
         @php
         $steps = $workStepGroups[$i]->workSteps()->count();
         $completion = $workStepGroups[$i]->workSteps()->whereHas('userWorksCompletions', function($q)use ($user){
