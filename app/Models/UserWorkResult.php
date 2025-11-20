@@ -10,7 +10,8 @@ class UserWorkResult extends Model
         'work_step_group_id',
         'user_id',
         'score',
-        'note'
+        'note',
+        'file'
     ];
 
     public function workStepGroup(){

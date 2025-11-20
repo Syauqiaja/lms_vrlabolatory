@@ -140,12 +140,15 @@ new class extends Component {
             );
             
             $this->workFile = $path;
+
+            $this->closeFileDialog();
+            $this->newWorkFile = null;
+            
+            session()->flash('message', 'File tugas berhasil diunggah!');
+        }else{
+            session()->flash('warning', 'Tidak ada file yang diunggah.');
         }
         
-        $this->closeFileDialog();
-        $this->newWorkFile = null;
-        
-        session()->flash('message', 'File tugas berhasil diunggah!');
     }
 }; ?>
 
@@ -178,9 +181,21 @@ new class extends Component {
             <div class="flex max-w-md mt-4 border border-gray-500 rounded-lg p-3">
                 <div class="grow items-center content-center">
                     @if ($workFile)
-                        <a href="{{ Storage::url($workFile) }}" target="_blank" class="text-blue-600 hover:text-blue-800">File tugas saat ini</a>
+                    <a href="{{ Storage::url($workFile) }}" target="_blank"
+                        class="text-white-600 hover:text-green-300 flex gap-2">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                            </svg>
+                        </div>
+                        <div>
+                            File tugas saat ini
+                        </div>
+                    </a>
                     @else
-                        <span class="text-gray-500">Belum ada file</span>
+                    <span class="text-gray-500">Tugas belum dikumpulkan</span>
                     @endif
                 </div>
                 <flux:button wire:click="openFileDialog">Update</flux:button>
@@ -283,10 +298,11 @@ new class extends Component {
 
                             <form wire:submit.prevent="saveWorkFile">
                                 <div class="mb-4">
-                                    <label for="work_file" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label for="work_file"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         File Tugas
                                     </label>
-                                    
+
                                     @if ($workFile)
                                     <flux:button variant="outline" size="sm" icon="document"
                                         :href="Storage::url($workFile)" target="_blank"
@@ -294,12 +310,13 @@ new class extends Component {
                                         File saat ini
                                     </flux:button>
                                     @else
-                                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Belum ada file yang diunggah</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Belum ada file yang
+                                        diunggah</p>
                                     @endif
-                                    
-                                    <flux:input type="file" id="work_file" wire:model="newWorkFile" 
+
+                                    <flux:input type="file" id="work_file" wire:model="newWorkFile"
                                         accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar" />
-                                    
+
                                     @error('newWorkFile')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror

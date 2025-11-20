@@ -18,6 +18,7 @@ new class extends Component {
     public $showScoreDialog = false;
     public $score;
     public $note;
+    public $workFile;
     
     public function mount(WorkStepGroup $workStepGroup, User $user){
         $this->workStepGroup = $workStepGroup;
@@ -40,6 +41,7 @@ new class extends Component {
         if($userResult){
             $this->score = $userResult->score;
             $this->note = $userResult->note;
+            $this->workFile = $userResult->file;
         }
     }
 
@@ -68,7 +70,8 @@ new class extends Component {
 
 <div>
     <div class="flex items-center space-x-4 mb-4">
-        <flux:button href="{{ route('admin.user.detail', ['user' => $user->id]) }}" variant="ghost" size="sm" icon="arrow-left">
+        <flux:button href="{{ route('admin.user.detail', ['user' => $user->id]) }}" variant="ghost" size="sm"
+            icon="arrow-left">
             Back to User Detail
         </flux:button>
     </div>
@@ -86,6 +89,33 @@ new class extends Component {
             <flux:button icon="star" wire:click="openScoreDialog" class="ms-3">Beri Penilaian</flux:button>
         </div>
         <x-work-step-result :workStepGroup='$workStepGroup' :files='$files' :fields='$fields' />
+
+
+        <div class="flex">
+            <h4 class="text-xl font-semibold">Pengumpulan Tugas</h4>
+            <flux:spacer></flux:spacer>
+        </div>
+
+        <div class="flex max-w-md mt-4 border border-gray-500 rounded-lg p-3">
+            <div class="grow items-center content-center">
+                @if ($workFile)
+                <a href="{{ Storage::url($workFile) }}" target="_blank" class="text-white-600 hover:text-green-300 flex gap-2">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                        </svg>
+                    </div>
+                    <div>
+                        File tugas saat ini
+                    </div>
+                </a>
+                @else
+                <span class="text-gray-500">Tugas belum dikumpulkan</span>
+                @endif
+            </div>
+        </div>
     </div>
 
     @if ($score || $note)
