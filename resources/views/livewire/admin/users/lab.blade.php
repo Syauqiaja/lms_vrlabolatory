@@ -19,6 +19,7 @@ new class extends Component {
     public $score;
     public $note;
     public $workFile;
+    public $prevPage;
     
     public function mount(WorkStepGroup $workStepGroup, User $user){
         $this->workStepGroup = $workStepGroup;
@@ -43,6 +44,8 @@ new class extends Component {
             $this->note = $userResult->note;
             $this->workFile = $userResult->file;
         }
+
+        $this->prevPage = redirect()->back()->getTargetUrl();
     }
 
     public function openScoreDialog()
@@ -70,7 +73,7 @@ new class extends Component {
 
 <div>
     <div class="flex items-center space-x-4 mb-4">
-        <flux:button href="{{ route('admin.user.detail', ['user' => $user->id]) }}" variant="ghost" size="sm"
+        <flux:button href="{{ $this->prevPage }}" variant="ghost" size="sm"
             icon="arrow-left">
             Back to User Detail
         </flux:button>

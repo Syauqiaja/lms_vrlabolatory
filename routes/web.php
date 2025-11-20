@@ -39,6 +39,9 @@ Route::middleware(['auth', 'role:admin'])->group(function(){
     Volt::route('admin/activity/{activity}', 'activity.detail')->name('admin.activity.detail');
     Volt::route('admin/activity/{activity}/edit', 'activity.edit')->name('admin.activity.edit');
 
+    Volt::route('admin/lab', 'lab.index')->name('admin.lab');
+    Volt::route('admin/lab/{workStepGroup}', 'admin.lab.detail')->name('admin.lab.detail');
+
     Volt::route('admin/activity/{activity}/materials', 'material.index')->name('admin.material.index');
     Volt::route('admin/activity/{activity}/materials/create', 'material.create')->name('admin.material.create');
     Volt::route('admin/activity/{activity}/materials/{material}', 'material.detail')->name('admin.material.detail');
@@ -46,7 +49,7 @@ Route::middleware(['auth', 'role:admin'])->group(function(){
 
     Volt::route('admin/quiz', 'quiz.index')->name('admin.quiz');
     Volt::route('admin/quiz/create', 'quiz.create')->name('admin.quiz.create');
-    Volt::route('admin/quiz/{quiz}', 'quiz.detail')->name('admin.quiz.detail');
+    Volt::route('admin/quiz/{quiz}', 'admin.quiz.detail')->name('admin.quiz.detail');
     Route::delete('admin/quiz/{quiz}/destroy', [QuizController::class, 'destroy'])->name('admin.quiz.destroy');
     Volt::route('admin/quiz/{quiz}/edit', 'quiz.edit')->name('admin.quiz.edit');
 

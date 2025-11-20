@@ -28,7 +28,7 @@
                     <flux:navlist.group :heading="__('Admin')" class="grid">
                         <flux:navlist.item icon="book-open" :href="route('admin.activity')" :current="request()->routeIs('admin.activity.*')" wire:navigate>{{ __('Activities') }}</flux:navlist.item>
                         <flux:navlist.item icon="puzzle-piece"  :href="route('admin.quiz')" :current="request()->routeIs('admin.quiz.*')" wire:navigate>{{ __('Quiz') }}</flux:navlist.item>
-                        <flux:navlist.item icon="beaker"  :href="route('lab')" :current="request()->routeIs('lab.*')" wire:navigate>{{ __('Lab') }}</flux:navlist.item>
+                        <flux:navlist.item icon="beaker"  :href="route('admin.lab')" :current="request()->routeIs('admin.lab.*')" wire:navigate>{{ __('Lab') }}</flux:navlist.item>
                         <flux:navlist.item icon="user"  :href="route('admin.users')" :current="request()->routeIs('admin.users.*')" wire:navigate>{{ __('Students') }}</flux:navlist.item>
                     </flux:navlist.group>
                 </flux:navlist>

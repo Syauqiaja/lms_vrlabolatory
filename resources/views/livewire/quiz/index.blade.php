@@ -54,7 +54,13 @@ new class extends Component {
     <div class="grid grid-cols-2 gap-4 items-start sm:items-center mb-8">
     @for ($i = 0; $i < count($quizzes); $i++)
     <div class="col-span-2 md:col-span-1 p-4 border border-gray-300/30 rounded-md flex gap-3 items-center hover:bg-blue-50/10 relative">
-        <a href="{{ route('quiz.detail', ['quiz' => $quizzes[$i]->id]) }}" class="flex-1 flex gap-3 items-center">
+        <a 
+        @role('admin')
+        href="{{ route('admin.quiz.detail', ['quiz' => $quizzes[$i]->id]) }}" 
+        @elserole
+        href="{{ route('quiz.detail', ['quiz' => $quizzes[$i]->id]) }}" 
+        @endrole
+        class="flex-1 flex gap-3 items-center">
             <div class="flex-1">
                 <div class="text-start font-semibold">
                     {{ $quizzes[$i]->title }}

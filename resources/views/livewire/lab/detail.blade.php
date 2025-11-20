@@ -193,7 +193,7 @@ new class extends Component {
                         <div>
                             File tugas saat ini
                         </div>
-                    </a>
+                    </a>    
                     @else
                     <span class="text-gray-500">Tugas belum dikumpulkan</span>
                     @endif
